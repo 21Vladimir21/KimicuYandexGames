@@ -12,13 +12,13 @@
 ### 🚩 [Flags - Удаленные конфиги.](Flags.md)
 
 ## Установка
-1) PackageManager > + > Add package from git URL.. <br>
-   ```http request
-   https://github.com/Kitgun1/KimicuYandexGames.git
-   ```
-2) PackageManager > + > Add package by name... <br>
+1) PackageManager > + > Add package by name... <br>
    ```http request
    com.unity.nuget.newtonsoft-json
+   ```
+2) PackageManager > + > Add package from git URL.. <br>
+   ```http request
+   https://github.com/DasDaOne/KimicuYandexGames.git
    ```
 
 ## Перед началом работы с SDK
@@ -39,8 +39,3 @@
 * Настройка в `Project Settings > Player`
   * Resolution and Presentation
     * Run In Background - ✅
-  * Publishing Settings
-    * `Compression Format` - `Brotli`
-    * `Name Files As Hashes` - ✅
-    * `Data Caching` - ❎
-    * `Decompression Fallback` - ✅
