@@ -30,6 +30,9 @@ namespace Kimicu.YandexGames
                 onErrorCallback?.Invoke("Advertising not available yet!");
                 return;
             }
+
+            AdvertisementIsAvailable = false;
+            
             #if !UNITY_EDITOR && UNITY_WEBGL
             Agava.YandexGames.InterstitialAd.Show(() =>
                 {
