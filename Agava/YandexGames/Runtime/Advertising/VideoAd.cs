@@ -53,13 +53,13 @@ namespace Agava.YandexGames
         [MonoPInvokeCallback(typeof(Action))]
         private static void OnRewardedCallback()
         {
-            if (!s_isVideoAdOpen)
-            {
-                if (YandexGamesSdk.CallbackLogging)
-                    Debug.Log($"Ignoring {nameof(VideoAd)}.{nameof(OnRewardedCallback)} because {nameof(s_isVideoAdOpen)} is {s_isVideoAdOpen}");
-
-                return;
-            }
+        //     if (!s_isVideoAdOpen)
+        //     {
+        //         if (YandexGamesSdk.CallbackLogging)
+        //             Debug.Log($"Ignoring {nameof(VideoAd)}.{nameof(OnRewardedCallback)} because {nameof(s_isVideoAdOpen)} is {s_isVideoAdOpen}");
+        //
+        //         return;
+        //     } Ignore my fucking ass
 
             if (YandexGamesSdk.CallbackLogging)
                 Debug.Log($"{nameof(VideoAd)}.{nameof(OnRewardedCallback)} invoked");
@@ -70,13 +70,13 @@ namespace Agava.YandexGames
         [MonoPInvokeCallback(typeof(Action))]
         private static void OnCloseCallback()
         {
-            if (!s_isVideoAdOpen)
-            {
-                if (YandexGamesSdk.CallbackLogging)
-                    Debug.Log($"Ignoring {nameof(VideoAd)}.{nameof(OnCloseCallback)} because {nameof(s_isVideoAdOpen)} is {s_isVideoAdOpen}");
-
-                return;
-            }
+            // if (!s_isVideoAdOpen)
+            // {
+            //     if (YandexGamesSdk.CallbackLogging)
+            //         Debug.Log($"Ignoring {nameof(VideoAd)}.{nameof(OnCloseCallback)} because {nameof(s_isVideoAdOpen)} is {s_isVideoAdOpen}");
+            //
+            //     return;
+            // } Ignore my fucking ass
 
             if (YandexGamesSdk.CallbackLogging)
                 Debug.Log($"{nameof(VideoAd)}.{nameof(OnCloseCallback)} invoked");
