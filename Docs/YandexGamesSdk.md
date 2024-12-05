@@ -27,6 +27,11 @@ YandexGamesSdk.IsInitialized; // bool
 
 /// Данные (id app, lang, и тд)
 YandexGamesSdk.Environment; // YandexGamesEnvironment
+
+// ============================================================================= //
+
+/// Серверное время
+YandexGamesSdk.ServerTime; // DateTime
 ```
 
 ## Methods
