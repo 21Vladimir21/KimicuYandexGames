@@ -32,7 +32,7 @@ namespace Kimicu.YandexGames
 #if !UNITY_EDITOR && UNITY_WEBGL // Yandex //
             Agava.YandexGames.Billing.GetProductCatalog(pictureSize, SuccessCatalogCallback, OnGetProductCatalogError);
 #endif
-#if UNITY_EDITOR && UNITY_WEBGL // Editor //
+#if UNITY_EDITOR // Editor //
             var catalog = new[] {
                 new CatalogProduct {
                     id = "coins_1000_example", title = "1000 монет",
