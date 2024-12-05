@@ -9,7 +9,6 @@ namespace Agava.YandexGames
     public static class YandexGamesSdk
     {
         private static Action s_onInitializeSuccessCallback;
-        private static Action<DateTime> s_onGetServerTimeSuccessCallback;
 
         /// <summary>
         /// Enable it to log SDK callbacks in the console.
@@ -21,7 +20,7 @@ namespace Agava.YandexGames
         /// If either something fails or called way too early, this will return false.
         /// </summary>
         public static bool IsInitialized => GetYandexGamesSdkIsInitialized();
-
+        
         /// <summary>
         /// Use it to check whether you're using Build and Run or running in the Editor.<br/>
         /// Can be called without initializing the SDK, can be called in Editor.
@@ -80,6 +79,22 @@ namespace Agava.YandexGames
             s_onInitializeSuccessCallback?.Invoke();
         }
 
+        public static DateTime ServerTime
+        {
+            get
+            {
+                string jsonTime = YandexGamesSdkGetServerTime();
+                
+                if (!DateTime.TryParse(jsonTime, out DateTime parsedTime))
+                    throw new Exception($"Got invalid dateJson: \"{jsonTime}\"");
+
+                return parsedTime;
+            }
+        }
+
+        [DllImport("__Internal")]
+        private static extern string YandexGamesSdkGetServerTime();
+
         public static void GameReady()
         {
             if (CallbackLogging)
@@ -103,25 +118,6 @@ namespace Agava.YandexGames
 
             YandexGamesSdkGameStop();
         }
-
-        public static void GetServerTime(Action<DateTime> onSuccess)
-        {
-            s_onGetServerTimeSuccessCallback = onSuccess;
-            YandexGamesServerTime(OnPurchaseProductSuccessCallback);
-        }
-        
-        [DllImport("__Internal")]
-        private static extern void YandexGamesServerTime(Action<string> successCallback);
-
-        [MonoPInvokeCallback(typeof(Action<string>))]
-        private static void OnPurchaseProductSuccessCallback(string dateJson)
-        {
-            if (!DateTime.TryParse(dateJson, out DateTime parsedTime))
-                throw new Exception($"Got invalid dateJson: \"{dateJson}\"");
-            
-            s_onGetServerTimeSuccessCallback?.Invoke(parsedTime);
-        }
-        
 
         [DllImport("__Internal")]
         private static extern void YandexGamesSdkGameReady();

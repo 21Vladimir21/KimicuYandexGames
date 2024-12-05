@@ -32,7 +32,14 @@ namespace Kimicu.YandexGames
             FileExtensions.LoadObject("environment", new YandexGamesEnvironment());
 #endif
 
-        public static IEnumerator Initialize(Action onSuccessCallback = null)
+		public static DateTime ServerTime =>
+#if !UNITY_EDITOR && UNITY_WEBGL
+			Agava.YandexGames.YandexGamesSdk.ServerTime;
+#else
+			DateTime.Now;
+#endif
+
+		public static IEnumerator Initialize(Action onSuccessCallback = null)
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
             yield return Agava.YandexGames.YandexGamesSdk.Initialize(onSuccessCallback);
@@ -68,15 +75,6 @@ namespace Kimicu.YandexGames
             #else
             Debug.Log($"{nameof(GameStop)} invoke!");
             #endif
-        }
-
-        public static void GetServerTime(Action<DateTime> onSuccessCallback)
-        {
-	        #if !UNITY_EDITOR && UNITY_WEBGL
-	        Agava.YandexGames.YandexGamesSdk.GetServerTime(onSuccessCallback);
-	        #else
-	        onSuccessCallback?.Invoke(DateTime.Now);
-	        #endif
         }
     }
 }
