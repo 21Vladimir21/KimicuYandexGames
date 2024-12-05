@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Kimicu.YandexGames.Extension;
 using Kimicu.YandexGames.Utils;
+using KimicuYandexGames.Utils;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -9,9 +11,7 @@ namespace Kimicu.YandexGames
 {
     public static class Flags
     {
-        private const string FILE_NAME = "flags";
-
-        public static void GetFlags(Action<Dictionary<string, string>> onSuccessCallback)
+	    public static void GetFlags(Action<Dictionary<string, string>> onSuccessCallback)
         {
             if (!YandexGamesSdk.IsInitialized) throw new Exception("YandexGamesSdk not initialized!");
 #if !UNITY_EDITOR && UNITY_WEBGL // Yandex //
@@ -22,12 +22,8 @@ namespace Kimicu.YandexGames
             });
 #endif
 #if UNITY_EDITOR && UNITY_WEBGL // Editor //
-            var flags = FileExtensions.LoadObject(FILE_NAME, new Dictionary<string, string>()
-            {
-                { "example_key", "example_value" },
-                { "example_key2", "example_value2" },
-            });
-            onSuccessCallback?.Invoke(flags);
+			onSuccessCallback?.Invoke(YandexEditorData.Instance.Flags
+				.ToDictionary(flag => flag.Key, flag => flag.Value));
 #endif
         }
 

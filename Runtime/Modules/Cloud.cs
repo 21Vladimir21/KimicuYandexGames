@@ -2,12 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using Kimicu.YandexGames.Extension;
+using KimicuYandexGames.Utils;
 using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Kimicu.YandexGames
 {
-    public static partial class Cloud
+    public static class Cloud
     {
         private static string _json = "{}";
         private static Dictionary<string, object> _jsonDictionary = new Dictionary<string, object>();
@@ -24,7 +25,7 @@ namespace Kimicu.YandexGames
             #if UNITY_WEBGL && !UNITY_EDITOR
             Agava.YandexGames.PlayerAccount.GetCloudSaveData(OnGetCloudSuccessCallback, OnGetCloudErrorCallback);
             #elif UNITY_EDITOR
-            OnGetCloudSuccessCallback(FileExtensions.LoadObject(SAVE_NAME, "{}"));
+            OnGetCloudSuccessCallback(YandexEditorData.Instance.SaveData);
             #endif
             yield return new WaitUntil(() => Initialized);
             onSuccessCallback?.Invoke();
@@ -112,7 +113,7 @@ namespace Kimicu.YandexGames
             #if UNITY_WEBGL && !UNITY_EDITOR
             Agava.YandexGames.PlayerAccount.SetCloudSaveData(jsonToYandex, flush, onSuccessCallback, onErrorCallback);
             #elif UNITY_EDITOR
-            FileExtensions.SaveObject(SAVE_NAME, jsonToYandex);
+            YandexEditorData.Instance.SaveData = jsonToYandex;
             onSuccessCallback?.Invoke();
             #endif
         }
@@ -126,7 +127,7 @@ namespace Kimicu.YandexGames
             #if UNITY_WEBGL && !UNITY_EDITOR
             Agava.YandexGames.PlayerAccount.SetCloudSaveData("{}", false, onSuccessCallback, onErrorCallback);
             #elif UNITY_EDITOR
-            FileExtensions.SaveObject(SAVE_NAME, "{}");
+            YandexEditorData.Instance.SaveData = "";
             onSuccessCallback?.Invoke();
             #endif
         }

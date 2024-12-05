@@ -5,7 +5,7 @@ using Coroutine = Kimicu.YandexGames.Utils.Coroutine;
 
 namespace Kimicu.YandexGames
 {
-    public static partial class Advertisement
+    public static class Advertisement
     {
         public static bool AdvertisementIsAvailable { get; private set; } = true;
         public static bool Initialized { get; private set; } = false;

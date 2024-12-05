@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using Agava.YandexGames;
 using Kimicu.YandexGames.Extension;
 using Kimicu.YandexGames.Utils;
+using KimicuYandexGames.Utils;
 using UnityEngine;
 
 namespace Kimicu.YandexGames
 {
-    public static partial class YandexGamesSdk
+    public static class YandexGamesSdk
     {
         /// <summary> Use it to check whether you're using Build and Run or running in the Editor. Can be called without initializing the SDK, can be called in Editor. </summary>
         public static bool IsRunningOnYandex => Agava.YandexGames.YandexGamesSdk.IsRunningOnYandex;
@@ -29,7 +30,7 @@ namespace Kimicu.YandexGames
 #if !UNITY_EDITOR && UNITY_WEBGL
             Agava.YandexGames.YandexGamesSdk.Environment;
 #else
-            FileExtensions.LoadObject("environment", new YandexGamesEnvironment());
+			YandexEditorData.Instance.Environment;
 #endif
 
 		public static DateTime ServerTime =>

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Agava.YandexGames;
 using Kimicu.YandexGames.Extension;
+using KimicuYandexGames.Utils;
 using UnityEngine;
 using Coroutine = Kimicu.YandexGames.Utils.Coroutine;
 using GetProductCatalogResponse = Agava.YandexGames.GetProductCatalogResponse;
@@ -33,23 +34,7 @@ namespace Kimicu.YandexGames
             Agava.YandexGames.Billing.GetProductCatalog(pictureSize, SuccessCatalogCallback, OnGetProductCatalogError);
 #endif
 #if UNITY_EDITOR // Editor //
-            var catalog = new[] {
-                new CatalogProduct {
-                    id = "coins_1000_example", title = "1000 монет",
-                    description = "Валюта для покупки предметов в магазине.",
-                    price = "9 YAN", priceValue = "9", priceCurrencyCode = "YAN",
-                    imageURI = "//yastatic.net/s3/games-static/static-data/images/payments/sdk/currency-icon-s@2x.png", 
-                    priceCurrencyPicture = "//yastatic.net/s3/games-static/static-data/images/payments/sdk/currency-icon-s@2x.png"
-                },
-                new CatalogProduct {
-                    id = "coins_100_example", title = "100 монет",
-                    description = "Валюта для покупки предметов в магазине.",
-                    price = "1 YAN", priceValue = "1", priceCurrencyCode = "YAN",
-                    imageURI = "//yastatic.net/s3/games-static/static-data/images/payments/sdk/currency-icon-s@2x.png", 
-                    priceCurrencyPicture = "//yastatic.net/s3/games-static/static-data/images/payments/sdk/currency-icon-s@2x.png"
-                },
-            };
-            SuccessCatalogCallback(new GetProductCatalogResponse { products = FileExtensions.LoadObject(CATALOG_FILE_NAME, catalog) });
+            SuccessCatalogCallback(new GetProductCatalogResponse { products = YandexEditorData.Instance.CatalogProducts});
 #endif
             yield return new WaitUntil(() => _catalogProductsIsActual);
             Initialized = true;
@@ -72,9 +57,8 @@ namespace Kimicu.YandexGames
             Agava.YandexGames.Billing.GetPurchasedProducts(onSuccessCallback, onErrorCallback);
 #endif
 #if UNITY_EDITOR && UNITY_WEBGL // Editor //
-            var purchasedProducts = FileExtensions.LoadObject(PURCHASED_PRODUCTS_FILE_NAME, new PurchasedProduct[] { });
             onSuccessCallback?.Invoke(new GetPurchasedProductsResponse {
-                purchasedProducts =  purchasedProducts,
+                purchasedProducts =  YandexEditorData.Instance.PurchasedProducts.ToArray(),
                 signature = Guid.NewGuid().ToString()
             });
 #endif
@@ -106,9 +90,7 @@ namespace Kimicu.YandexGames
                 purchaseTime = DateTime.Now.ToString(CultureInfo.InvariantCulture),
                 developerPayload = developerPayload
             };
-            var purchasedProducts = FileExtensions.LoadObject(PURCHASED_PRODUCTS_FILE_NAME, new PurchasedProduct[] { }).ToList();
-            purchasedProducts.Add(purchasedProduct);
-            FileExtensions.SaveObject(PURCHASED_PRODUCTS_FILE_NAME, purchasedProducts.ToArray());
+            YandexEditorData.Instance.PurchasedProducts.Add(purchasedProduct);
             
             onSuccessCallback?.Invoke(new PurchaseProductResponse()
             {
@@ -128,10 +110,9 @@ namespace Kimicu.YandexGames
             Agava.YandexGames.Billing.ConsumeProduct(productToken, onSuccessCallback, onErrorCallback);
 #endif
 #if UNITY_EDITOR && UNITY_WEBGL // Editor //
-            var purchasedProducts = FileExtensions.LoadObject(PURCHASED_PRODUCTS_FILE_NAME, new PurchasedProduct[] { });
-            var actualPurchasedProducts = purchasedProducts.ToList();
-            actualPurchasedProducts.Remove(actualPurchasedProducts.Find(p => p.purchaseToken == productToken));
-            FileExtensions.SaveObject(PURCHASED_PRODUCTS_FILE_NAME ,actualPurchasedProducts.ToArray());
+			var consumedProduct = YandexEditorData.Instance.PurchasedProducts.First(x => x.purchaseToken == productToken);
+			YandexEditorData.Instance.PurchasedProducts.Remove(consumedProduct);
+			
             onSuccessCallback?.Invoke();
 #endif
         }

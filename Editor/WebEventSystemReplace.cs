@@ -11,7 +11,7 @@ namespace KimicuYandexGames.Editors
 {
     public class WebEventSystemReplace : Editor
     {
-        [MenuItem("Kimicu/Yandex Games/Replace All Event Systems")]
+        [MenuItem("Window/Kimicu Yandex Games/Replace All Event Systems")]
         private static void ReplaceEventSystems()
         {
             var scenes = EditorBuildSettings.scenes.Select(scene => scene.path).ToList();

@@ -7,20 +7,20 @@ namespace Agava.YandexGames
     public class CatalogProduct
     {
         [field: Preserve]
-        public string description;
-        [field: Preserve]
         public string id;
+        [field: Preserve]
+        public string title;
+        [field: Preserve]
+        public string description;
         [field: Preserve]
         public string imageURI;
         [field: Preserve]
         public string price;
         [field: Preserve]
-        public string priceCurrencyCode;
-        [field: Preserve]
         public string priceValue;
         [field: Preserve]
-        public string priceCurrencyPicture;
+        public string priceCurrencyCode;
         [field: Preserve]
-        public string title;
+        public string priceCurrencyPicture;
     }
 }
