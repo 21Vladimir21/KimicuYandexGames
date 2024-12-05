@@ -12,11 +12,7 @@
 ### 🚩 [Flags - Удаленные конфиги.](Flags.md)
 
 ## Установка
-1) PackageManager > + > Add package by name... <br>
-   ```http request
-   com.unity.nuget.newtonsoft-json
-   ```
-2) PackageManager > + > Add package from git URL.. <br>
+1) PackageManager > + > Add package from git URL.. <br>
    ```http request
    https://github.com/DasDaOne/KimicuYandexGames.git
    ```
