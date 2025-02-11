@@ -9,8 +9,9 @@ namespace Agava.WebUtility
         {
             get
             {
-                if (WebApplication.IsRunningOnWebGL)
-                    return GetDeviceIsMobile();
+                #if UNITY_WEBGL && !UNITY_EDITOR
+                return GetDeviceIsMobile();
+                #endif
 
                 return SystemInfo.deviceType == DeviceType.Handheld;
             }

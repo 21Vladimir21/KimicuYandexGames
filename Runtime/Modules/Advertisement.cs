@@ -37,24 +37,20 @@ namespace Kimicu.YandexGames
             Agava.YandexGames.InterstitialAd.Show(() =>
                 {
                     onOpenCallback?.Invoke();
-                    WebApplication.InAdvert = true;
                 },
                 (_) =>
                 {
                     onCloseCallback?.Invoke();
-                    WebApplication.InAdvert = false;
                     AdvertisementIsAvailable = false;
                 },
                 (error) =>
                 {
                     onErrorCallback?.Invoke(error);
-                    WebApplication.InAdvert = false;
                     AdvertisementIsAvailable = false;
                 },
                 () =>
                 {
                     onOfflineCallback?.Invoke();
-                    WebApplication.InAdvert = false;
                     AdvertisementIsAvailable = false;
                 });
             #elif UNITY_EDITOR
@@ -80,18 +76,15 @@ namespace Kimicu.YandexGames
             Agava.YandexGames.VideoAd.Show(() =>
                 {
                     onOpenCallback?.Invoke();
-                    WebApplication.InAdvert = true;
                 }, ()
                     => onRewardedCallback?.Invoke(),
                 () =>
                 {
                     onCloseCallback?.Invoke();
-                    WebApplication.InAdvert = false;
                     s_isInVideoAd = false;
                 }, (error) =>
                 {
                     onErrorCallback?.Invoke(error);
-                    WebApplication.InAdvert = false;
                     s_isInVideoAd = false;
                 });
             #elif UNITY_EDITOR

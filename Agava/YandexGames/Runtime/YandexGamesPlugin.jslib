@@ -87,14 +87,28 @@ const library = {
 				});
 			}).catch(() => {
 				console.error('Failed to initialize SDK.');
-		});
-	},
+		    });
+	    },
 
 
         throwIfSdkNotInitialized: function () {
             if (!yandexGames.isInitialized) {
                 throw new Error('SDK is not initialized. Invoke YandexGamesSdk.Initialize() coroutine and wait for it to finish.');
             }
+        },
+        
+        webApplicationInitialize: function (onGameFocusChangeCallbackPtr) {
+            if (!yandexGames.isInitialized) {
+                throw new Error('SDK is not initialized. Invoke YandexGamesSdk.Initialize() coroutine and wait for it to finish.');
+            }
+            
+            yandexGames.sdk.on('game_api_pause', () => {
+                dynCall('vi', onGameFocusChangeCallbackPtr, [false]);
+            });
+            
+            yandexGames.sdk.on('game_api_resume', () => {
+                dynCall('vi', onGameFocusChangeCallbackPtr, [true]);
+            });
         },
 
         gameReady: function () {
@@ -536,6 +550,10 @@ const library = {
         yandexGames.throwIfSdkNotInitialized();
 
         return yandexGames.getYandexGamesSdkEnvironment();
+    },
+    
+    WebApplicationInitialize: function (onGameFocusChangeCallbackPtr){
+        yandexGames.webApplicationInitialize(onGameFocusChangeCallbackPtr);
     },
 
     GetDeviceType: function () {
