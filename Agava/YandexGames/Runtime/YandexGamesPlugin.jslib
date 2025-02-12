@@ -552,7 +552,7 @@ const library = {
         return yandexGames.getYandexGamesSdkEnvironment();
     },
     
-    WebApplicationInitialize: function (onGameFocusChangeCallbackPtr){
+    YandexWebApplicationInitialize: function (onGameFocusChangeCallbackPtr){
         yandexGames.webApplicationInitialize(onGameFocusChangeCallbackPtr);
     },
 

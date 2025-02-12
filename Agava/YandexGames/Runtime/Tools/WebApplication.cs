@@ -8,7 +8,7 @@ namespace Agava.YandexGames
 	public static class WebApplication
 	{
 		[DllImport("__Internal")]
-		private static extern void WebApplicationInitialize(Action<bool> onGameFocusChangeCallback);
+		private static extern void YandexWebApplicationInitialize(Action<bool> onGameFocusChangeCallback);
 		
 		private static Action<bool> s_onGameFocusChangeCallback;
 
@@ -16,7 +16,7 @@ namespace Agava.YandexGames
 		{
 			s_onGameFocusChangeCallback = onGameFocusChangeCallback;
 			
-			WebApplicationInitialize(OnGameFocusChange);
+			YandexWebApplicationInitialize(OnGameFocusChange);
 		}
 
 		[MonoPInvokeCallback(typeof(Action<bool>))]

@@ -10,7 +10,9 @@ namespace Kimicu.YandexGames
         {
             OnGameFocusChange = onGameFocusChange;
 
+            #if !UNITY_EDITOR
             Agava.YandexGames.WebApplication.Initialize(OnAgavaGameFocusChange);
+            #endif
         }
 
         private static void OnAgavaGameFocusChange(bool isFocused)
