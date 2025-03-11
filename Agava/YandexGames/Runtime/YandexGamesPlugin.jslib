@@ -309,6 +309,31 @@ const library = {
             });
         },
 
+        getAllGames: function (successCallbackPtr, errorCallbackPtr){
+            yandexGames.sdk.features.GamesAPI.getAllGames().then(({games, developerURL}) => {
+                console.log(JSON.stringify(games))
+                const buffer = yandexGames.allocateUnmanagedString(JSON.stringify(games));
+                dynCall('vi', successCallbackPtr, [buffer]);
+                _free(buffer);
+            }).catch(error => {
+                yandexGames.invokeErrorCallback(error, errorCallbackPtr);
+            })
+        },
+        
+        getGameById: function (appId, successCallbackPtr, errorCallbackPtr) {
+            yandexGames.sdk.features.GamesAPI.getGameByID(appId).then(({isAvailable, game}) => {
+                if (isAvailable) {
+                    const buffer = yandexGames.allocateUnmanagedString(JSON.stringify(game));
+                    dynCall('vi', successCallbackPtr, [buffer]);
+                    _free(buffer);
+                } else {
+                    yandexGames.invokeErrorCallback(`Game ${appId} is not available`, errorCallbackPtr);
+                }
+            }).catch(error => {
+                yandexGames.invokeErrorCallback(error, errorCallbackPtr);
+            })  
+        },
+
         interstitialAdShow: function (openCallbackPtr, closeCallbackPtr, errorCallbackPtr, offlineCallbackPtr) {
             yandexGames.sdk.adv.showFullscreenAdv({
                 callbacks: {
@@ -613,6 +638,18 @@ const library = {
         const clientFeaturesJson = UTF8ToString(clientFeatures);
 
         yandexGames.getFlags(defaultFlagsJson, clientFeaturesJson, successCallbackPtr, errorCallbackPtr);
+    },
+    
+    GetAllGames: function (successCallbackPtr, errorCallbackPtr) {
+        yandexGames.throwIfSdkNotInitialized();
+
+        yandexGames.getAllGames(successCallbackPtr, errorCallbackPtr);
+    },
+    
+    GetGameById: function(appId, successCallbackPtr, errorCallbackPtr) {
+        yandexGames.throwIfSdkNotInitialized();
+
+        yandexGames.getGameById(appId, successCallbackPtr, errorCallbackPtr);
     },
 
     PlayerAccountSetCloudSaveData: function (сloudSaveDataJsonPtr, flush, successCallbackPtr, errorCallbackPtr) {
