@@ -91,10 +91,11 @@ namespace Kimicu.YandexGames
 			#else
 			onSuccessCallback?.Invoke(new PlayerAccountProfileDataResponse
 			{
+				uniqueID = "123456789",
 				lang = "ru",
+				publicName = "John Doe",
 				profilePicture = "https://avatars.mds.yandex.net/get-yapic/56823/0g-2/islands-" + pictureSize,
 				scopePermissions = new PlayerAccountProfileDataResponse.ScopePermissions(),
-				uniqueID = "123456789"
 			});
 			#endif
 		}
