@@ -1,4 +1,5 @@
 ﻿using System;
+using Agava.YandexGames;
 using PlayerAccount = Agava.YandexGames.PlayerAccount;
 
 namespace Kimicu.YandexGames
@@ -82,5 +83,20 @@ namespace Kimicu.YandexGames
             onSuccessCallback?.Invoke();
         }
 #endif
+
+		public static void GetProfileData(Action<PlayerAccountProfileDataResponse> onSuccessCallback, Action<string> onErrorCallback = null, ProfilePictureSize pictureSize = ProfilePictureSize.medium)
+		{
+			#if !UNITY_EDITOR && UNITY_WEBGL 
+			PlayerAccount.GetProfileData(onSuccessCallback, onErrorCallback, pictureSize);
+			#else
+			onSuccessCallback?.Invoke(new PlayerAccountProfileDataResponse
+			{
+				lang = "ru",
+				profilePicture = "https://avatars.mds.yandex.net/get-yapic/56823/0g-2/islands-" + pictureSize,
+				scopePermissions = new PlayerAccountProfileDataResponse.ScopePermissions(),
+				uniqueID = "123456789"
+			});
+			#endif
+		}
     }
 }
