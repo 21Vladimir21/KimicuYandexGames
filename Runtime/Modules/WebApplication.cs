@@ -36,7 +36,7 @@ namespace Kimicu.YandexGames
 
         private static void CheckFocus()
         {
-            OnGameFocusChange?.Invoke(!inFocus || customValue);
+            OnGameFocusChange?.Invoke(inFocus && !customValue);
         }
     }
 }
