@@ -167,10 +167,10 @@ const library = {
         	  },
         	  payload: yandexGames.sdk.environment.payload,
         	};
-                  const environmentJson = JSON.stringify(environment);
-                  const environmentJsonUnmanagedStringPtr = yandexGames.allocateUnmanagedString(environmentJson);
+            const environmentJson = JSON.stringify(environment);
+            const environmentJsonUnmanagedStringPtr = yandexGames.allocateUnmanagedString(environmentJson);
         	console.log(yandexGames.sdk.environment);
-                  return environmentJsonUnmanagedStringPtr;
+            return environmentJsonUnmanagedStringPtr;
         },
 
         getDeviceType: function () {
