@@ -19,6 +19,10 @@ namespace Kimicu.YandexGames
         
         public static event Action<bool> OnGameFocusChange;
 
+        /// <summary>
+        /// <b>False</b> - Game is in background, should be paused
+        /// <b>True</b> - Game is active, should be unpaused
+        /// </summary>
         public static void Initialize(Action<bool> onGameFocusChange = null)
         {
             OnGameFocusChange = onGameFocusChange;
