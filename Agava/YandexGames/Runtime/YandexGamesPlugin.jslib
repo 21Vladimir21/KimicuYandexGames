@@ -157,19 +157,19 @@ const library = {
         },
 
         getYandexGamesSdkEnvironment: function () {
-        	const environment =  {
-        	  app: {
-        		id: yandexGames.sdk.environment.app.id,
-        	  },
-        	  i18n: {
-        		lang: yandexGames.sdk.environment.i18n.lang,
-        		tld: yandexGames.sdk.environment.i18n.tld,
-        	  },
-        	  payload: yandexGames.sdk.environment.payload,
+        	const environment = {
+        	    app: {
+        		    id: yandexGames.sdk.environment.app.id,
+        	    },
+        	    i18n: {
+        	        lang: yandexGames.sdk.environment.i18n.lang,
+        	        tld: yandexGames.sdk.environment.i18n.tld,
+        	    },
+        	    payload: yandexGames.sdk.environment.payload,
         	};
+        	
             const environmentJson = JSON.stringify(environment);
             const environmentJsonUnmanagedStringPtr = yandexGames.allocateUnmanagedString(environmentJson);
-        	console.log(yandexGames.sdk.environment);
             return environmentJsonUnmanagedStringPtr;
         },
 
