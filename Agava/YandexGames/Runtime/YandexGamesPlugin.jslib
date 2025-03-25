@@ -18,6 +18,10 @@ const library = {
         isInitializeCalled: false,
 
         flags: undefined,
+        
+        isAdEnabled: false,
+        
+        isGameStopped: false,
 
         yandexGamesSdkInitialize: function (successCallbackPtr) {
             if (yandexGames.isInitializeCalled) {
@@ -103,11 +107,18 @@ const library = {
             }
             
             yandexGames.sdk.on('game_api_pause', () => {
+                isGameStopped = true;
                 dynCall('vi', onGameFocusChangeCallbackPtr, [false]);
             });
             
             yandexGames.sdk.on('game_api_resume', () => {
+                isGameStopped = false;
                 dynCall('vi', onGameFocusChangeCallbackPtr, [true]);
+            });
+            
+            document.addEventListener.(`visibilitychange`,function(){
+            if(!isAdEnabled || !isGameStopped){
+                dynCall('vi', onGameFocusChangeCallbackPtr, [document.hidden]);}
             });
         },
 
@@ -349,9 +360,11 @@ const library = {
             yandexGames.sdk.adv.showFullscreenAdv({
                 callbacks: {
                     onOpen: function () {
+                        isAdEnabled = true;
                         dynCall('v', openCallbackPtr, []);
                     },
                     onClose: function (wasShown) {
+                        isAdEnabled = false;
                         dynCall('vi', closeCallbackPtr, [wasShown]);
                     },
                     onError: function (error) {
@@ -368,12 +381,14 @@ const library = {
             yandexGames.sdk.adv.showRewardedVideo({
                 callbacks: {
                     onOpen: function () {
+                        isAdEnabled = true;
                         dynCall('v', openCallbackPtr, []);
                     },
                     onRewarded: function () {
                         dynCall('v', rewardedCallbackPtr, []);
                     },
                     onClose: function () {
+                        isAdEnabled = false;
                         dynCall('v', closeCallbackPtr, []);
                     },
                     onError: function (error) {
