@@ -18,6 +18,12 @@ const library = {
         isInitializeCalled: false,
 
         flags: undefined,
+        
+        onGameFocusChangeCallbackPtr: undefined,
+        
+        yandexFocused: true,
+        
+        webFocus: true,
 
         yandexGamesSdkInitialize: function (successCallbackPtr) {
             if (yandexGames.isInitializeCalled) {
@@ -98,18 +104,31 @@ const library = {
         },
         
         webApplicationInitialize: function (onGameFocusChangeCallbackPtr) {
-            if (!yandexGames.isInitialized) {
-                throw new Error('SDK is not initialized. Invoke YandexGamesSdk.Initialize() coroutine and wait for it to finish.');
-            }
+                    if (!yandexGames.isInitialized) {
+                        throw new Error('SDK is not initialized. Invoke YandexGamesSdk.Initialize() coroutine and wait for it to finish.');
+                    }
             
-            yandexGames.sdk.on('game_api_pause', () => {
-                dynCall('vi', onGameFocusChangeCallbackPtr, [false]);
-            });
+                    yandexGames.onGameFocusChangeCallbackPtr = onGameFocusChangeCallbackPtr;
+                    
+                    yandexGames.sdk.on('game_api_pause', () => {
+                        yandexGames.yandexFocused = false;
+                        yandexGames.onApplicationFocusChange();
+                    });
+                    
+                    yandexGames.sdk.on('game_api_resume', () => {
+                        yandexGames.yandexFocused = true;        
+                        yandexGames.onApplicationFocusChange();
+                    });
             
-            yandexGames.sdk.on('game_api_resume', () => {
-                dynCall('vi', onGameFocusChangeCallbackPtr, [true]);
-            });
-        },
+                    document.addEventListener("visibilitychange", () => {
+                        yandexGames.webFocus = !document.hidden;
+                        yandexGames.onApplicationFocusChange();
+                    });
+                },
+                
+                onApplicationFocusChange: function (){
+                    dynCall('vi', yandexGames.onGameFocusChangeCallbackPtr, [yandexGames.yandexFocused && yandexGames.webFocus && yandexGames.pageFocus]);
+                },
 
         gameReady: function () {
             yandexGames.sdk.features.LoadingAPI.ready();
