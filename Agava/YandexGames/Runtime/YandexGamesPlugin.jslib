@@ -127,7 +127,7 @@ const library = {
                 },
                 
                 onApplicationFocusChange: function (){
-                    dynCall('vi', yandexGames.onGameFocusChangeCallbackPtr, [yandexGames.yandexFocused && yandexGames.webFocus && yandexGames.pageFocus]);
+                    dynCall('vi', yandexGames.onGameFocusChangeCallbackPtr, [yandexGames.yandexFocused && yandexGames.webFocus]);
                 },
 
         gameReady: function () {
