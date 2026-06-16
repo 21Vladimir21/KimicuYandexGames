@@ -116,10 +116,10 @@ const library = {
                 dynCall('vi', onGameFocusChangeCallbackPtr, [true]);
             });
             
-            document.addEventListener.(`visibilitychange`,function(){
-            if(!isAdEnabled || !isGameStopped){
-                dynCall('vi', onGameFocusChangeCallbackPtr, [document.hidden]);}
-            });
+            document.addEventListener(`visibilitychange`,function(){
+            if(isAdEnabled == false || isGameStopped == false){
+                dynCall('vi', onGameFocusChangeCallbackPtr, [!document.hidden]);
+            }});
         },
 
         gameReady: function () {
