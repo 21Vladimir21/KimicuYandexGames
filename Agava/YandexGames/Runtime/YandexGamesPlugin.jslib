@@ -1,4 +1,4 @@
-const library = {
+const agava = {
 
     // Class definition.
 
@@ -812,5 +812,5 @@ const library = {
     }
 }
 
-autoAddDeps(library, '$yandexGames');
-mergeInto(LibraryManager.library, library);
+autoAddDeps(agava, '$yandexGames');
+mergeInto(LibraryManager.library, agava);

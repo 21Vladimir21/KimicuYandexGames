@@ -1,4 +1,4 @@
-const library = {
+const agavaAdBlock = {
     
     // Class definition.
 
@@ -40,5 +40,5 @@ const library = {
     },
 }
 
-autoAddDeps(library, '$adBlock');
-mergeInto(LibraryManager.library, library);
+autoAddDeps(agavaAdBlock, '$adBlock');
+mergeInto(LibraryManager.library, agavaAdBlock);

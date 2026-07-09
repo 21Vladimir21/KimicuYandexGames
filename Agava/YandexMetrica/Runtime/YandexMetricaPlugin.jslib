@@ -1,4 +1,4 @@
-const library = {
+const agavaMetrica = {
   
   // Class definition.
 
@@ -18,5 +18,5 @@ const library = {
   },
 }
 
-autoAddDeps(library, '$yandexMetrica');
-mergeInto(LibraryManager.library, library);
+autoAddDeps(agavaMetrica, '$yandexMetrica');
+mergeInto(LibraryManager.library, agavaMetrica);
