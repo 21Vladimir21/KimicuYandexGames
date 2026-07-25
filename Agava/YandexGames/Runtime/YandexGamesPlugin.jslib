@@ -541,19 +541,23 @@ const agava = {
         },
 
         reviewPopupCanOpen: function (resultCallbackPtr) {
-            yandexGames.sdk.feedback.canReview().then(function (result, reason) {
-                if (!reason) {
-                    reason = 'No reason';
-                }
-                const reasonUnmanagedStringPtr = yandexGames.allocateUnmanagedString(reason);
-                dynCall('vii', resultCallbackPtr, [result, reasonUnmanagedStringPtr]);
+            yandexGames.sdk.feedback.canReview().then(function (result) {
+                const reason = result.reason || 'No reason';
+                const reasonUnmanagedStringPtr =
+                    yandexGames.allocateUnmanagedString(reason);
+
+                dynCall('vii', resultCallbackPtr, [
+                    result.value,
+                    reasonUnmanagedStringPtr
+                ]);
+
                 _free(reasonUnmanagedStringPtr);
             });
         },
 
         reviewPopupOpen: function (resultCallbackPtr) {
             yandexGames.sdk.feedback.requestReview().then(function (result) {
-                dynCall('vi', resultCallbackPtr, [result]);
+                dynCall('vi', resultCallbackPtr, [result.feedbackSent]);
             });
         },
 
