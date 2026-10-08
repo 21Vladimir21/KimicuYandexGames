@@ -62,7 +62,11 @@ const agava = {
 					throw new Error('PlayerAccount failed to initialize.');
 				});
 
-				const leaderboardInitializationPromise = sdk.getLeaderboards().then(function (leaderboard) {
+				const leaderboardInitializationPromise = Promise.resolve(sdk.leaderboards).then(function (leaderboard) {
+					if (!leaderboard) {
+						throw new Error('Modern Leaderboards API is unavailable.');
+					}
+
 					yandexGames.leaderboard = leaderboard;
 				}).catch(function () {
 					throw new Error('Leaderboard failed to initialize.');
@@ -397,7 +401,13 @@ const agava = {
                 return;
             }
 
-            yandexGames.leaderboard.setLeaderboardScore(leaderboardName, score, extraData).then(function () {
+            yandexGames.sdk.isAvailableMethod('leaderboards.setScore').then(function (isAvailable) {
+                if (!isAvailable) {
+                    throw new Error('leaderboards.setScore is unavailable.');
+                }
+
+                return yandexGames.sdk.leaderboards.setScore(leaderboardName, score, extraData);
+            }).then(function () {
                 dynCall('v', successCallbackPtr, []);
             }).catch(function (error) {
                 yandexGames.invokeErrorCallback(error, errorCallbackPtr);
@@ -410,11 +420,17 @@ const agava = {
                 return;
             }
 
-            yandexGames.leaderboard.getLeaderboardEntries(leaderboardName, {
-                includeUser: includeSelf, quantityAround: competingPlayersCount, quantityTop: topPlayersCount
+            yandexGames.sdk.isAvailableMethod('leaderboards.getEntries').then(function (isAvailable) {
+                if (!isAvailable) {
+                    throw new Error('leaderboards.getEntries is unavailable.');
+                }
+
+                return yandexGames.sdk.leaderboards.getEntries(leaderboardName, {
+                    includeUser: includeSelf, quantityAround: competingPlayersCount, quantityTop: topPlayersCount
+                });
             }).then(function (response) {
                 response.entries.forEach(function (entry) {
-                    entry.player.profilePicture = entry.player.getAvatarSrc({size: pictureSize});
+                    entry.player.profilePicture = entry.player.getAvatarSrc(pictureSize);
                 });
 
                 const entriesJson = JSON.stringify(response);
@@ -432,8 +448,14 @@ const agava = {
                 return;
             }
 
-            yandexGames.leaderboard.getLeaderboardPlayerEntry(leaderboardName).then(function (response) {
-                response.player.profilePicture = response.player.getAvatarSrc({size: pictureSize});
+            yandexGames.sdk.isAvailableMethod('leaderboards.getPlayerEntry').then(function (isAvailable) {
+                if (!isAvailable) {
+                    throw new Error('leaderboards.getPlayerEntry is unavailable.');
+                }
+
+                return yandexGames.sdk.leaderboards.getPlayerEntry(leaderboardName);
+            }).then(function (response) {
+                response.player.profilePicture = response.player.getAvatarSrc(pictureSize);
 
                 const entryJson = JSON.stringify(response);
                 const entryJsonUnmanagedStringPtr = yandexGames.allocateUnmanagedString(entryJson);
